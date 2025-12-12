@@ -43,7 +43,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <section className="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white py-20 lg:py-32">
+      <section className="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white min-h-screen flex items-center">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-3xl">
