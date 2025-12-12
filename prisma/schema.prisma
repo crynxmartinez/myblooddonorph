@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  password          String
+  firstName         String
+  lastName          String
+  phone             String?
+  city              String
+  bloodType         String
+  rhFactor          String    @default("positive")
+  dateOfBirth       DateTime?
+  lastDonationDate  DateTime?
+  isAvailable       Boolean   @default(true)
+  isVerified        Boolean   @default(false)
+  consentInfo       Boolean   @default(false)
+  consentContact    Boolean   @default(false)
+  consentTimestamp  DateTime?
+  patientId         String?   @unique
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  requestsReceived  DonorRequest[] @relation("DonorRequests")
+  auditLogs         AuditLog[]
+
+  @@index([city])
+  @@index([bloodType])
+  @@index([isAvailable])
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  auditLogs AuditLog[]
+}
+
+model DonorRequest {
+  id              String   @id @default(cuid())
+  donorId         String
+  donor           User     @relation("DonorRequests", fields: [donorId], references: [id])
+  
+  requesterName   String
+  requesterEmail  String
+  requesterPhone  String
+  requesterBloodType String
+  hospitalName    String
+  purpose         String
+  
+  ipAddress       String
+  fingerprint     String?
+  
+  consentGiven    Boolean  @default(false)
+  consentTimestamp DateTime?
+  
+  status          String   @default("pending")
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
+
+  @@index([ipAddress])
+  @@index([donorId])
+  @@index([createdAt])
+}
+
+model RateLimit {
+  id          String   @id @default(cuid())
+  ipAddress   String
+  fingerprint String?
+  action      String
+  count       Int      @default(1)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+
+  @@unique([ipAddress, action])
+  @@index([expiresAt])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  action      String
+  entityType  String
+  entityId    String?
+  details     String?
+  ipAddress   String?
+  
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  
+  adminId     String?
+  admin       Admin?   @relation(fields: [adminId], references: [id])
+  
+  createdAt   DateTime @default(now())
+
+  @@index([action])
+  @@index([entityType])
+  @@index([createdAt])
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
