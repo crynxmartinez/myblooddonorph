@@ -33,10 +33,12 @@ export function getFullBloodType(bloodType: string, rhFactor: string): string {
 
 export function normalizeCity(city: string): string {
   // Normalize city to Title Case: "zamboanga" or "ZAMBOANGA" -> "Zamboanga"
+  if (!city) return "";
   return city
     .trim()
     .toLowerCase()
     .split(" ")
+    .filter((word) => word.length > 0)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
