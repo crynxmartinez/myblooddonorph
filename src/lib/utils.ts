@@ -31,6 +31,16 @@ export function getFullBloodType(bloodType: string, rhFactor: string): string {
   return `${bloodType}${rhSymbol}`;
 }
 
+export function normalizeCity(city: string): string {
+  // Normalize city to Title Case: "zamboanga" or "ZAMBOANGA" -> "Zamboanga"
+  return city
+    .trim()
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export const PHILIPPINE_CITIES = [
   "Manila",
   "Quezon City",

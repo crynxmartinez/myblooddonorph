@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Card } from "@/components/ui/Card";
-import { BLOOD_TYPES, PHILIPPINE_CITIES } from "@/lib/utils";
+import { BLOOD_TYPES } from "@/lib/utils";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -35,11 +35,6 @@ export default function RegisterPage() {
   const bloodTypeOptions = BLOOD_TYPES.map((type) => ({
     value: type,
     label: type,
-  }));
-
-  const cityOptions = PHILIPPINE_CITIES.map((city) => ({
-    value: city,
-    label: city,
   }));
 
   const rhOptions = [
@@ -225,15 +220,14 @@ export default function RegisterPage() {
                     setFormData({ ...formData, phone: e.target.value })
                   }
                 />
-                <Select
+                <Input
                   label="City"
                   required
-                  options={cityOptions}
                   value={formData.city}
                   onChange={(e) =>
                     setFormData({ ...formData, city: e.target.value })
                   }
-                  placeholder="Select your city"
+                  placeholder="Enter your city (e.g., Zamboanga)"
                 />
                 <div className="grid grid-cols-2 gap-4">
                   <Select

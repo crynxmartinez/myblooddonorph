@@ -42,7 +42,20 @@ export async function GET(request: NextRequest) {
       isAvailable: donor.isAvailable,
     }));
 
-    return NextResponse.json({ success: true, data: formattedDonors });
+    // Get unique cities from all registered donors for the filter dropdown
+    const allCities = await prisma.user.findMany({
+      where: {
+        isAvailable: true,
+        consentContact: true,
+      },
+      select: { city: true },
+      distinct: ["city"],
+      orderBy: { city: "asc" },
+    });
+
+    const cities = allCities.map((u) => u.city);
+
+    return NextResponse.json({ success: true, data: formattedDonors, cities });
   } catch (error) {
     console.error("Error fetching donors:", error);
     return NextResponse.json(

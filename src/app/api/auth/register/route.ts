@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { hashPassword, generateToken } from "@/lib/auth";
 import { createAuditLog } from "@/lib/audit";
 import { createPatient, updatePatientBloodProfile } from "@/lib/patient-api";
+import { normalizeCity } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,6 +28,9 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Normalize city to Title Case (zamboanga, ZAMBOANGA -> Zamboanga)
+    const normalizedCity = normalizeCity(city);
 
     if (!consentInfo || !consentContact) {
       return NextResponse.json(
@@ -54,7 +58,7 @@ export async function POST(request: NextRequest) {
         name: `${firstName} ${lastName}`,
         email,
         phone,
-        city,
+        city: normalizedCity,
         status: "Active",
       });
 
@@ -78,7 +82,7 @@ export async function POST(request: NextRequest) {
         firstName,
         lastName,
         phone,
-        city,
+        city: normalizedCity,
         bloodType,
         rhFactor: rhFactor || "positive",
         dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,

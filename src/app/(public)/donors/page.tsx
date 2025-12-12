@@ -8,7 +8,7 @@ import { Select } from "@/components/ui/Select";
 import { Card } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
 import { Checkbox } from "@/components/ui/Checkbox";
-import { BLOOD_TYPES, PHILIPPINE_CITIES, getFullBloodType } from "@/lib/utils";
+import { BLOOD_TYPES, getFullBloodType } from "@/lib/utils";
 
 interface Donor {
   id: string;
@@ -31,6 +31,7 @@ interface RequestForm {
 
 export default function DonorsPage() {
   const [donors, setDonors] = useState<Donor[]>([]);
+  const [cities, setCities] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [cityFilter, setCityFilter] = useState("");
   const [bloodTypeFilter, setBloodTypeFilter] = useState("");
@@ -67,6 +68,9 @@ export default function DonorsPage() {
       const data = await res.json();
       if (data.success) {
         setDonors(data.data);
+        if (data.cities) {
+          setCities(data.cities);
+        }
       }
     } catch (err) {
       console.error("Failed to fetch donors:", err);
@@ -134,7 +138,7 @@ export default function DonorsPage() {
     label: type,
   }));
 
-  const cityOptions = PHILIPPINE_CITIES.map((city) => ({
+  const cityOptions = cities.map((city) => ({
     value: city,
     label: city,
   }));
