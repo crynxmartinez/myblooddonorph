@@ -33,10 +33,10 @@ export function Modal({
   if (!isOpen) return null;
 
   const sizes = {
-    sm: "max-w-sm",
-    md: "max-w-md",
-    lg: "max-w-lg",
-    xl: "max-w-xl",
+    sm: "max-w-[95vw] sm:max-w-sm",
+    md: "max-w-[95vw] sm:max-w-md",
+    lg: "max-w-[95vw] sm:max-w-lg",
+    xl: "max-w-[95vw] sm:max-w-xl",
   };
 
   return (
@@ -47,7 +47,7 @@ export function Modal({
       />
       <div
         className={cn(
-          "relative bg-white rounded-xl shadow-2xl w-full mx-4 max-h-[90vh] overflow-y-auto",
+          "relative bg-white rounded-xl shadow-2xl w-full mx-2 sm:mx-4 max-h-[85vh] overflow-y-auto",
           sizes[size]
         )}
       >

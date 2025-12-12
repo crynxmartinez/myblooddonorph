@@ -181,8 +181,8 @@ export default function DonorsPage() {
                 onChange={(e) => setBloodTypeFilter(e.target.value)}
               />
             </div>
-            <div className="flex items-end">
-              <Button onClick={fetchDonors} variant="secondary">
+            <div className="flex items-end w-full md:w-auto">
+              <Button onClick={fetchDonors} variant="secondary" className="w-full md:w-auto">
                 <Filter className="w-4 h-4 mr-2" />
                 Apply Filters
               </Button>
